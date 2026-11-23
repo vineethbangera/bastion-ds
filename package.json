@@ -1,0 +1,10 @@
+{
+  "name": "bastion-ds",
+  "private": true,
+  "description": "Bastion, the design system for the Sentinel security console.",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  }
+}
