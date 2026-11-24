@@ -25,7 +25,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --build-script-name build-storybook --exit-zero-on-changes"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -52,6 +53,7 @@
     "@vitejs/plugin-react": "^6.3.0",
     "@vitest/browser": "^5.1.1",
     "@vitest/browser-playwright": "^5.1.1",
+    "chromatic": "~18.15.1",
     "eslint": "^10.15.0",
     "playwright": "^1.65.1",
     "react": "^19.3.1",
