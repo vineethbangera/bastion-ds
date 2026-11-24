@@ -1,6 +1,6 @@
 {
   "name": "@vineethbangera/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bastion design tokens for web, iOS and Android, built from the Figma export in tokens/.",
   "repository": {
     "type": "git",
