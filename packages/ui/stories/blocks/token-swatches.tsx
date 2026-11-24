@@ -1,4 +1,4 @@
-import { dark, light } from "@bastion/tokens"
+import { dark, light } from "@vineethbangera/tokens"
 
 type TokenName = keyof typeof light
 
@@ -6,7 +6,7 @@ const toCamel = (name: string) =>
   name.replace(/-(.)/g, (_, c: string) => c.toUpperCase()) as TokenName
 
 // One row per token: its CSS variable, and the Light and Dark values read
-// from @bastion/tokens, so this page can't drift from the build.
+// from @vineethbangera/tokens, so this page can't drift from the build.
 export function TokenSwatches({ names }: { names: string[] }) {
   return (
     <table className="my-4 w-full border-collapse text-sm">

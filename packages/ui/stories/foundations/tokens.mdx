@@ -5,7 +5,7 @@ import { TokenSwatches } from "../blocks/token-swatches"
 
 # Tokens
 
-Components never use raw colours. They use semantic tokens such as `--primary` or `--severity-critical`, which `@bastion/tokens` builds from the Figma export. The values below are read from that build, so they're always current.
+Components never use raw colours. They use semantic tokens such as `--primary` or `--severity-critical`, which `@vineethbangera/tokens` builds from the Figma export. The values below are read from that build, so they're always current.
 
 ## From Figma to a variable
 
@@ -59,6 +59,6 @@ Used by `SeverityBadge` and anywhere Sentinel shows how serious a finding is. Al
 | Platform | Example |
 |---|---|
 | CSS / Tailwind | `var(--severity-critical)`, `bg-severity-critical/10` |
-| TypeScript | `import { light } from "@bastion/tokens"`, then `light.severityCritical` |
+| TypeScript | `import { light } from "@vineethbangera/tokens"`, then `light.severityCritical` |
 | SwiftUI | `BastionLight.severityCritical` |
 | Compose | `BastionLightColors.severityCritical` |

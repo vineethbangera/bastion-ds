@@ -6,7 +6,7 @@ import "./preview.css"
 const preview: Preview = {
   tags: ["autodocs"],
   decorators: [
-    // Toolbar switch: Dark adds the .dark class that @bastion/tokens targets.
+    // Toolbar switch: Dark adds the .dark class that @vineethbangera/tokens targets.
     withThemeByClassName({
       themes: { Light: "", Dark: "dark" },
       // The Vitest run sets this to test every story in both themes.

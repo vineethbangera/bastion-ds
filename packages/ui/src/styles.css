@@ -1,11 +1,11 @@
 /*
  * Bastion UI styles.
  * Colour values are not defined here: they come from the CSS variables
- * that @bastion/tokens writes (Light in :root, Dark in .dark), bundled in
+ * that @vineethbangera/tokens writes (Light in :root, Dark in .dark), bundled in
  * below. This file only tells Tailwind which variable each colour utility
  * should read.
  */
-@import "@bastion/tokens/tokens.css";
+@import "@vineethbangera/tokens/tokens.css";
 @import "tailwindcss" source(none);
 @import "tw-animate-css";
 

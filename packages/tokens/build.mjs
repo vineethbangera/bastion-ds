@@ -120,10 +120,15 @@ for (const mode of MODES) {
           },
         ],
       },
-      ts: {
+      // Plain JavaScript plus type declarations, so the published package
+      // works in any bundler or in Node without compiling TypeScript.
+      js: {
         transforms: ["bastion/name/camel"],
-        buildPath: "dist/ts/",
-        files: [{ destination: `${mode.name}.ts`, format: "javascript/es6" }],
+        buildPath: "dist/js/",
+        files: [
+          { destination: `${mode.name}.js`, format: "javascript/es6" },
+          { destination: `${mode.name}.d.ts`, format: "typescript/es6-declarations" },
+        ],
       },
       ios: {
         transforms: ["color/ColorSwiftUI", "bastion/name/camel"],
@@ -165,7 +170,6 @@ const css = await Promise.all(
 )
 await writeFile(new URL("./dist/css/tokens.css", import.meta.url), css.join("\n"))
 
-await writeFile(
-  new URL("./dist/ts/index.ts", import.meta.url),
-  MODES.map((mode) => `export * as ${mode.name} from "./${mode.name}"\n`).join("")
-)
+const index = MODES.map((mode) => `export * as ${mode.name} from "./${mode.name}.js"\n`).join("")
+await writeFile(new URL("./dist/js/index.js", import.meta.url), index)
+await writeFile(new URL("./dist/js/index.d.ts", import.meta.url), index)

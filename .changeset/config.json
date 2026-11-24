@@ -1,0 +1,9 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "vineethbangera/bastion-ds" }],
+  "commit": false,
+  "baseBranch": "main",
+  "access": "public",
+  "updateInternalDependencies": "patch",
+  "privatePackages": { "version": false, "tag": false }
+}

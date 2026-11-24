@@ -1,6 +1,6 @@
 // bastion/no-hardcoded-colors
 //
-// Fails on colours written by hand instead of read from @bastion/tokens:
+// Fails on colours written by hand instead of read from @vineethbangera/tokens:
 //   - hex, rgb(), hsl() and other colour functions in any string
 //   - Tailwind arbitrary colours: bg-[#ff0000], text-[rgb(0_0_0)], [color:red]
 //   - Tailwind's built-in palette: text-red-500, bg-black/10
@@ -31,14 +31,14 @@ const CANDIDATES = {
 CANDIDATES.any = [...new Set([...CANDIDATES.surface, ...CANDIDATES.text, ...CANDIDATES.border])]
 
 // Light values from the built tokens, found from the package being linted
-// (which depends on @bastion/tokens), or from the sibling package in this
+// (which depends on @vineethbangera/tokens), or from the sibling package in this
 // monorepo. If tokens are not built yet the rule still fails; it just
 // suggests tokens by role instead of by nearest value.
 const tokenCache = new Map()
 function tokenValues(cwd) {
   if (tokenCache.has(cwd)) return tokenCache.get(cwd)
   const candidates = [
-    () => createRequire(join(cwd, "package.json")).resolve("@bastion/tokens/tokens.css"),
+    () => createRequire(join(cwd, "package.json")).resolve("@vineethbangera/tokens/tokens.css"),
     () => fileURLToPath(new URL("../../tokens/dist/css/tokens.css", import.meta.url)),
   ]
   let values = {}

@@ -1,11 +1,21 @@
 {
-  "name": "@bastion/tokens",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@vineethbangera/tokens",
+  "version": "0.1.0",
   "description": "Bastion design tokens for web, iOS and Android, built from the Figma export in tokens/.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vineethbangera/bastion-ds.git",
+    "directory": "packages/tokens"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "exports": {
-    ".": "./dist/ts/index.ts",
+    ".": {
+      "types": "./dist/js/index.d.ts",
+      "default": "./dist/js/index.js"
+    },
     "./tokens.css": "./dist/css/tokens.css"
   },
   "files": [

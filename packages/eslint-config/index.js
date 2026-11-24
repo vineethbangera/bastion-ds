@@ -39,7 +39,7 @@ export default [
 
   ...storybook.configs["flat/recommended"],
 
-  // Colours come from @bastion/tokens. The rule skips packages/tokens itself.
+  // Colours come from @vineethbangera/tokens. The rule skips packages/tokens itself.
   {
     plugins: { bastion },
     rules: { "bastion/no-hardcoded-colors": "error" },

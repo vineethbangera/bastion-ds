@@ -42,7 +42,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build tokens
-        run: pnpm --filter @bastion/tokens build
+        run: pnpm --filter @vineethbangera/tokens build
 
       - name: Lint
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
@@ -55,7 +55,7 @@ jobs:
       # Story tests run in headless Chromium.
       - name: Install Playwright Chromium
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: pnpm --filter @bastion/ui exec playwright install --with-deps chromium
+        run: pnpm --filter @vineethbangera/ui exec playwright install --with-deps chromium
 
       - name: Test
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
@@ -63,7 +63,7 @@ jobs:
 
       - name: Build Storybook
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: pnpm --filter @bastion/ui build-storybook
+        run: pnpm --filter @vineethbangera/ui build-storybook
 
       # Download from the run's Summary page to browse this PR's Storybook.
       - name: Upload Storybook
@@ -99,7 +99,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build tokens
-        run: pnpm --filter @bastion/tokens build
+        run: pnpm --filter @vineethbangera/tokens build
 
       # Builds Storybook, uploads it and takes a snapshot of every story.
       # Visual changes don't fail this job: Chromatic adds its own

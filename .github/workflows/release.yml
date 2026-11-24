@@ -1,0 +1,59 @@
+# Releases @vineethbangera/tokens and @vineethbangera/ui to GitHub Packages.
+#
+# On every push to main, Changesets does one of two things:
+# - If there are changesets in .changeset/, it opens (or updates) a
+#   "Version Packages" pull request that bumps versions, writes the
+#   CHANGELOG.md entries and deletes the changesets it used.
+# - If there are none (usually because that pull request just merged), it
+#   publishes every package whose version isn't in the registry yet, then
+#   tags the commit and creates a GitHub release for each package.
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# Never run two releases at once: the second waits for the first.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # push the version commit, tags and GitHub releases
+  pull-requests: write # open the Version Packages pull request
+  packages: write # publish to GitHub Packages
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Publishing uses the workflow's own GITHUB_TOKEN, so there is no
+      # secret to manage. It can publish packages linked to this repository,
+      # which the "repository" field in each package.json does.
+      - name: Authenticate with GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+
+      - name: Version pull request or publish
+        uses: changesets/action@v2
+        with:
+          version-script: pnpm changeset version
+          publish-script: pnpm release
+          commit-message: Version Packages
+          pr-title: Version Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

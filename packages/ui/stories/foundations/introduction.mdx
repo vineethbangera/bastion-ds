@@ -11,16 +11,16 @@ Bastion is the design system for **Sentinel**, a security console. It gives Sent
 | Layer | Package | What it does |
 |---|---|---|
 | Figma | `tokens/tokens.json` | Tokens Studio export of the Figma variables. Designers own this file. |
-| Tokens | `@bastion/tokens` | Turns that export into CSS variables, TypeScript, SwiftUI and Compose. |
-| Components | `@bastion/ui` | React components styled with those CSS variables. |
+| Tokens | `@vineethbangera/tokens` | Turns that export into CSS variables, TypeScript, SwiftUI and Compose. |
+| Components | `@vineethbangera/ui` | React components styled with those CSS variables. |
 
 A colour change in Figma reaches every platform with one build, and no component code changes.
 
 ## Using Bastion in an app
 
 ```tsx
-import "@bastion/ui/styles.css"
-import { Button, SeverityBadge } from "@bastion/ui"
+import "@vineethbangera/ui/styles.css"
+import { Button, SeverityBadge } from "@vineethbangera/ui"
 
 export function Example() {
   return (

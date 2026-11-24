@@ -5,8 +5,14 @@
   "packageManager": "pnpm@12.21.0",
   "scripts": {
     "build": "pnpm -r build",
-    "lint": "pnpm --filter @bastion/tokens build && pnpm -r lint",
-    "typecheck": "pnpm --filter @bastion/tokens build && pnpm -r typecheck",
-    "test": "pnpm --filter @bastion/tokens build && pnpm -r test"
+    "lint": "pnpm --filter @vineethbangera/tokens build && pnpm -r lint",
+    "typecheck": "pnpm --filter @vineethbangera/tokens build && pnpm -r typecheck",
+    "test": "pnpm --filter @vineethbangera/tokens build && pnpm -r test",
+    "changeset": "changeset",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3"
   }
 }
