@@ -25,4 +25,6 @@ pnpm typecheck  # TypeScript, including stories and config files
 pnpm test       # the colour rule's tests, then every Storybook story in Light and Dark, with axe
 ```
 
+CI runs all three, then builds Storybook, on every pull request (`.github/workflows/ci.yml`).
+
 Story tests run in headless Chromium. If it isn't installed: `pnpm --filter @bastion/ui exec playwright install chromium`.
