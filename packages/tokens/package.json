@@ -12,10 +12,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@bastion/eslint-config": "workspace:*",
     "@tokens-studio/sd-transforms": "^2.0.3",
+    "eslint": "^10.15.0",
     "style-dictionary": "^5.8.0"
   }
 }

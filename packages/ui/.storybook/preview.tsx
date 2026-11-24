@@ -9,12 +9,16 @@ const preview: Preview = {
     // Toolbar switch: Dark adds the .dark class that @bastion/tokens targets.
     withThemeByClassName({
       themes: { Light: "", Dark: "dark" },
-      defaultTheme: "Light",
+      // The Vitest run sets this to test every story in both themes.
+      defaultTheme: import.meta.env.BASTION_TEST_THEME ?? "Light",
     }),
   ],
   parameters: {
     layout: "centered",
     controls: { expanded: true },
+    // Accessibility violations fail the story's test (default is "todo",
+    // which only warns). The a11y panel in Storybook shows the same checks.
+    a11y: { test: "error" },
     options: {
       storySort: {
         order: [

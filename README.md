@@ -16,3 +16,13 @@ Bastion is the design system for Sentinel, a security console. This repo is a pn
 ```bash
 pnpm install
 ```
+
+## Quality checks
+
+```bash
+pnpm lint       # ESLint (incl. jsx-a11y and bastion/no-hardcoded-colors) and Stylelint
+pnpm typecheck  # TypeScript, including stories and config files
+pnpm test       # the colour rule's tests, then every Storybook story in Light and Dark, with axe
+```
+
+Story tests run in headless Chromium. If it isn't installed: `pnpm --filter @bastion/ui exec playwright install chromium`.

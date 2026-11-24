@@ -12,6 +12,7 @@ const config: StorybookConfig = {
     },
     "@storybook/addon-a11y",
     "@storybook/addon-themes",
+    "@storybook/addon-vitest",
   ],
   typescript: {
     // Reads prop types (including cva variant unions) from the TypeScript
