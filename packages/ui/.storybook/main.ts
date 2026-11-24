@@ -13,7 +13,14 @@ const config: StorybookConfig = {
     "@storybook/addon-a11y",
     "@storybook/addon-themes",
     "@storybook/addon-vitest",
+    // MCP server for coding agents at http://localhost:6016/mcp while
+    // Storybook runs. Connected to Claude Code in the repo's .mcp.json.
+    "@storybook/addon-mcp",
   ],
+  features: {
+    // Component manifest (props, docs, stories) that the MCP docs tools read.
+    componentsManifest: true,
+  },
   typescript: {
     // Reads prop types (including cva variant unions) from the TypeScript
     // checker, so autodocs lists every variant and size.
