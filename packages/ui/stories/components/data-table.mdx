@@ -1,0 +1,77 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks"
+import { Button, DataTable } from "../../src"
+import { Do, DoDont, Dont } from "../blocks/do-dont"
+import { findingColumns, findings } from "../fixtures"
+import * as DataTableStories from "./data-table.stories"
+
+<Meta of={DataTableStories} name="Usage" />
+
+# DataTable usage
+
+A table for lists of records such as findings, hosts or agents. It has three slots, and your app handles the data:
+
+- **`toolbar`**: filters, search and bulk actions above the table.
+- **`rowActions(row)`**: actions for one row, in a right-hand column.
+- **`emptyState`**: what to show when there are no rows.
+
+Sorting, filtering and paging are up to your app: change `data` and the table re-renders. For a complete example, see **Patterns › Findings table**.
+
+<Canvas of={DataTableStories.AllSlots} />
+
+<DoDont>
+  <Do caption="Say why the table is empty and what to do next.">
+    <div className="w-full">
+      <DataTable
+        aria-label="Findings"
+        columns={findingColumns.slice(0, 2)}
+        data={[]}
+        getRowId={(row) => row.id}
+        emptyState="No findings match this filter. Clear the filter to see all 128."
+      />
+    </div>
+  </Do>
+  <Dont caption="Show a bare 'No data'; the user can't tell if it's empty, filtered or broken.">
+    <div className="w-full">
+      <DataTable
+        aria-label="Findings"
+        columns={findingColumns.slice(0, 2)}
+        data={[]}
+        getRowId={(row) => row.id}
+        emptyState="No data"
+      />
+    </div>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do caption="Name row actions with the row they act on, such as 'Open F-101'.">
+    <div className="w-full">
+      <DataTable
+        aria-label="Findings"
+        columns={findingColumns.slice(0, 1)}
+        data={findings.slice(0, 2)}
+        getRowId={(row) => row.id}
+        rowActions={(row) => (
+          <Button variant="ghost" size="sm" aria-label={`Open ${row.id}`}>Open</Button>
+        )}
+      />
+    </div>
+  </Do>
+  <Dont caption="Fill the actions column with several primary buttons per row.">
+    <div className="w-full">
+      <DataTable
+        aria-label="Findings"
+        columns={findingColumns.slice(0, 1)}
+        data={findings.slice(0, 2)}
+        getRowId={(row) => row.id}
+        rowActions={() => (
+          <div className="flex gap-1">
+            <Button size="sm">Open</Button>
+            <Button size="sm">Assign</Button>
+            <Button size="sm">Close</Button>
+          </div>
+        )}
+      />
+    </div>
+  </Dont>
+</DoDont>

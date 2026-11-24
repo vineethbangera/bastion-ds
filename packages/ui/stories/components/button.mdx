@@ -1,0 +1,61 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks"
+import { PlusIcon, Trash2Icon } from "lucide-react"
+import { Button } from "../../src"
+import { Do, DoDont, Dont } from "../blocks/do-dont"
+import * as ButtonStories from "./button.stories"
+
+<Meta of={ButtonStories} name="Usage" />
+
+# Button usage
+
+Buttons start an action. If clicking takes the user somewhere else, it's a link: use `variant="link"`, or `asChild` with an `<a>`.
+
+<Canvas of={ButtonStories.AllVariants} />
+
+## Choosing a variant
+
+| Variant | Use for |
+|---|---|
+| `default` | The main action in an area. One per card, dialog or toolbar. |
+| `outline` | Secondary actions next to a default button, such as Cancel or Export. |
+| `secondary` / `ghost` | Low-emphasis or repeated actions, such as row actions in a table. |
+| `destructive` | Actions that delete data or cut off access. Confirm first. |
+| `link` | Inline navigation inside text. |
+
+<DoDont>
+  <Do caption="Use one default button for the main action, and outline for the rest.">
+    <Button variant="outline">Cancel</Button>
+    <Button>Run scan</Button>
+  </Do>
+  <Dont caption="Put several default buttons side by side; nothing stands out.">
+    <Button>Cancel</Button>
+    <Button>Export</Button>
+    <Button>Run scan</Button>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do caption="Say exactly what will happen, and use destructive for irreversible actions.">
+    <Button variant="destructive">
+      <Trash2Icon data-icon="inline-start" />
+      Delete policy
+    </Button>
+  </Do>
+  <Dont caption="Use vague labels, or destructive for something harmless like Cancel.">
+    <Button variant="destructive">Cancel</Button>
+    <Button>OK</Button>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do caption="Give icon-only buttons an aria-label that names the action.">
+    <Button size="icon" aria-label="Add rule">
+      <PlusIcon />
+    </Button>
+  </Do>
+  <Dont caption="Leave an icon-only button unnamed; screen readers just say 'button'.">
+    <Button size="icon">
+      <PlusIcon />
+    </Button>
+  </Dont>
+</DoDont>

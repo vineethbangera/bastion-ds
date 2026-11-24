@@ -1,0 +1,9 @@
+@import "../src/styles.css";
+
+/* Classes used only in stories and docs, kept out of the library CSS. */
+@source "../stories";
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}

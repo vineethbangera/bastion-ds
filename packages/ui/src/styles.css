@@ -1,0 +1,52 @@
+/*
+ * Bastion UI styles.
+ * Colour values are not defined here: they come from the CSS variables
+ * that @vineethbangera/tokens writes (Light in :root, Dark in .dark), bundled in
+ * below. This file only tells Tailwind which variable each colour utility
+ * should read.
+ */
+@import "@vineethbangera/tokens/tokens.css";
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+/* Only scan the library source, not stories or other files in the package. */
+@source "./";
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant data-open (&:where([data-state="open"]));
+@custom-variant data-closed (&:where([data-state="closed"]));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-text: var(--destructive-text);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-severity-critical: var(--severity-critical);
+  --color-severity-high: var(--severity-high);
+  --color-severity-medium: var(--severity-medium);
+  --color-severity-low: var(--severity-low);
+  --color-severity-info: var(--severity-info);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+}

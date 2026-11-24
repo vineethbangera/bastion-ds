@@ -1,0 +1,33 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks"
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../src"
+import { Do, DoDont, Dont } from "../blocks/do-dont"
+import * as CardStories from "./card.stories"
+
+<Meta of={CardStories} name="Usage" />
+
+# Card usage
+
+A card groups related information and actions about one thing, such as a scan schedule or an agent. Use `size="sm"` in dense layouts such as dashboards.
+
+<Canvas of={CardStories.WithAction} />
+
+<DoDont>
+  <Do caption="Give each card a title that names what it's about, and keep actions in the header or footer.">
+    <Card className="w-64">
+      <CardHeader>
+        <CardTitle>Agent sentinel-04</CardTitle>
+        <CardDescription>Connected 12 seconds ago</CardDescription>
+      </CardHeader>
+      <CardContent>Version 3.2.1</CardContent>
+    </Card>
+  </Do>
+  <Dont caption="Nest cards inside cards; the borders compete and the hierarchy gets lost.">
+    <Card className="w-64">
+      <CardContent>
+        <Card size="sm">
+          <CardContent>Agent sentinel-04</CardContent>
+        </Card>
+      </CardContent>
+    </Card>
+  </Dont>
+</DoDont>

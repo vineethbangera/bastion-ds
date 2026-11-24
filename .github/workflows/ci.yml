@@ -1,0 +1,117 @@
+# Runs Bastion's quality gates and Chromatic visual tests on every pull
+# request, and Chromatic on main so merged changes become the new baseline.
+#
+# The "CI" job holds every gate, so branch protection needs one required
+# check for it.
+# Each gate is its own step, and later steps run even when an earlier one
+# fails (as long as install worked), so one run shows every problem.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to the same pull request cancels the run it replaces.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      # Uses the pnpm version in package.json's "packageManager" field.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        id: install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build tokens
+        run: pnpm --filter @vineethbangera/tokens build
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm lint
+
+      - name: Typecheck
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm typecheck
+
+      # Story tests run in headless Chromium.
+      - name: Install Playwright Chromium
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm --filter @vineethbangera/ui exec playwright install --with-deps chromium
+
+      - name: Test
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm test
+
+      - name: Build Storybook
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm --filter @vineethbangera/ui build-storybook
+
+      # Download from the run's Summary page to browse this PR's Storybook.
+      - name: Upload Storybook
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: storybook
+          path: packages/ui/storybook-static
+          retention-days: 7
+          if-no-files-found: ignore
+
+  chromatic:
+    name: Chromatic
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Chromatic compares against the builds of earlier commits, so it
+      # needs the full Git history and the PR's real branch, not GitHub's
+      # temporary merge commit.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build tokens
+        run: pnpm --filter @vineethbangera/tokens build
+
+      # Builds Storybook, uploads it and takes a snapshot of every story.
+      # Visual changes don't fail this job: Chromatic adds its own
+      # "UI Tests" check to the PR, which passes once you accept them.
+      # Changes merged to main are accepted automatically.
+      - name: Publish to Chromatic
+        working-directory: packages/ui
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+            echo "::warning title=Chromatic skipped::Add the CHROMATIC_PROJECT_TOKEN repository secret to run visual tests."
+            exit 0
+          fi
+          pnpm chromatic --auto-accept-changes main

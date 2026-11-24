@@ -1,0 +1,39 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks"
+import { Input } from "../../src"
+import { Do, DoDont, Dont } from "../blocks/do-dont"
+import * as InputStories from "./input.stories"
+
+<Meta of={InputStories} name="Usage" />
+
+# Input usage
+
+A single-line text field. Bastion doesn't have a Field component yet, so label each input yourself.
+
+<Canvas of={InputStories.WithLabel} />
+
+<DoDont>
+  <Do caption="Use a visible label, and a placeholder that shows the expected format.">
+    <div className="flex w-56 flex-col gap-1.5">
+      <label htmlFor="do-range" className="text-sm font-medium">Target range</label>
+      <Input id="do-range" placeholder="10.0.0.0/16" />
+    </div>
+  </Do>
+  <Dont caption="Use the placeholder as the label; it disappears as soon as someone types.">
+    <Input className="w-56" placeholder="Target range" />
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do caption="Mark errors with aria-invalid and explain them in text.">
+    <div className="flex w-56 flex-col gap-1.5">
+      <label htmlFor="do-cidr" className="text-sm font-medium">Target range</label>
+      <Input id="do-cidr" aria-invalid aria-describedby="do-cidr-error" defaultValue="10.0.4.0/33" />
+      <p id="do-cidr-error" className="text-sm" style={{ color: "var(--destructive)" }}>
+        The prefix must be 32 or less.
+      </p>
+    </div>
+  </Do>
+  <Dont caption="Show only a red border; it says something's wrong but not what.">
+    <Input className="w-56" aria-invalid defaultValue="10.0.4.0/33" aria-label="Target range" />
+  </Dont>
+</DoDont>

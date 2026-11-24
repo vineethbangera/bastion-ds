@@ -1,2 +1,8 @@
 packages:
   - "packages/*"
+
+# pnpm 12 stops the install when a dependency's install script is neither
+# allowed nor declined. esbuild's only downloads a binary that pnpm already
+# installs as an optional dependency, so it is declined.
+allowBuilds:
+  esbuild: false

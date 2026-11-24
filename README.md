@@ -16,3 +16,52 @@ Bastion is the design system for Sentinel, a security console. This repo is a pn
 ```bash
 pnpm install
 ```
+
+## Quality checks
+
+```bash
+pnpm lint       # ESLint (incl. jsx-a11y and bastion/no-hardcoded-colors) and Stylelint
+pnpm typecheck  # TypeScript, including stories and config files
+pnpm test       # the colour rule's tests, then every Storybook story in Light and Dark, with axe
+```
+
+Story tests run in headless Chromium. If it isn't installed: `pnpm --filter @vineethbangera/ui exec playwright install chromium`.
+
+## Releasing
+
+`@vineethbangera/tokens` and `@vineethbangera/ui` are published to [GitHub Packages](https://github.com/vineethbangera?tab=packages&repo_name=bastion-ds), versioned with [Changesets](https://changesets.dev). `@bastion/eslint-config` is private and never published.
+
+1. In a pull request that changes a published package, run `pnpm changeset`. Pick the packages, pick patch, minor or major, and write one line for the changelog. Commit the file it creates in `.changeset/`.
+2. When the pull request merges to `main`, the Release workflow opens a "Version Packages" pull request (or updates the open one) that bumps the versions and writes `CHANGELOG.md`.
+3. Merging "Version Packages" publishes the new versions, tags them and creates a GitHub release for each.
+
+### Which bump?
+
+Versions follow [semantic versioning](https://semver.org): `major.minor.patch`.
+
+| Bump | When | Examples here |
+|---|---|---|
+| Patch | Fixes. Nothing an app uses is added, removed or renamed. | The destructive Button's text moved to `destructive-text` to pass contrast. A token's value changes for a fix, not a redesign. |
+| Minor | Something new that existing code doesn't have to use. | A new optional prop on `SeverityBadge`. A new component, variant or token. |
+| Major | Something existing code relies on changes or goes away. | Renaming or removing a token (`--detructive-text` → `--destructive-text`) or a prop. Removing a Button variant. Changing what `severity` accepts. |
+
+While a package is on `0.x`, Changesets still applies these rules, but a major bump moves `0.x` to `1.0.0`.
+
+### Installing
+
+GitHub Packages needs a token to install, even for public packages. Create a personal access token (classic) with the `read:packages` scope, then in the app:
+
+```ini
+# .npmrc
+@vineethbangera:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+```bash
+pnpm add @vineethbangera/ui
+```
+
+```tsx
+import "@vineethbangera/ui/styles.css" // includes the token variables
+import { Button, SeverityBadge } from "@vineethbangera/ui"
+```

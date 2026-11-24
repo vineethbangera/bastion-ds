@@ -1,0 +1,64 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+import { TokenSwatches } from "../blocks/token-swatches"
+
+<Meta title="Foundations/Tokens" />
+
+# Tokens
+
+Components never use raw colours. They use semantic tokens such as `--primary` or `--severity-critical`, which `@vineethbangera/tokens` builds from the Figma export. The values below are read from that build, so they're always current.
+
+## From Figma to a variable
+
+Every token passes through three layers in Figma:
+
+1. **Primitive**: a raw value on a scale, such as `colors.red.600 = #e7000b`.
+2. **Style** (Nova): gives the primitive a role, such as `color.light.destructive → colors.red.600`.
+3. **Theme**: the name components use, such as `severity.critical → color.light.destructive`. Light and Dark point the same name at different values.
+
+Only the theme layer is published. Use these names, never primitives, so a Figma change reaches every component.
+
+## Colour
+
+Names follow shadcn/ui, so shadcn components and examples work with Bastion as they are.
+
+<TokenSwatches
+  names={[
+    "background",
+    "foreground",
+    "card",
+    "card-foreground",
+    "popover",
+    "popover-foreground",
+    "primary",
+    "primary-foreground",
+    "secondary",
+    "secondary-foreground",
+    "muted",
+    "muted-foreground",
+    "accent",
+    "accent-foreground",
+    "destructive",
+    "destructive-foreground",
+    "destructive-text",
+    "border",
+    "input",
+    "ring",
+  ]}
+/>
+
+## Severity
+
+Used by `SeverityBadge` and anywhere Sentinel shows how serious a finding is. Always pair them with an icon and a text label. Never use them for decoration.
+
+<TokenSwatches names={["severity-critical", "severity-high", "severity-medium", "severity-low", "severity-info"]} />
+
+> **Known issue:** `severity-medium` points to the secondary grey in Figma, so it is barely visible as a severity colour. It needs fixing in the Figma file.
+
+## In code
+
+| Platform | Example |
+|---|---|
+| CSS / Tailwind | `var(--severity-critical)`, `bg-severity-critical/10` |
+| TypeScript | `import { light } from "@vineethbangera/tokens"`, then `light.severityCritical` |
+| SwiftUI | `BastionLight.severityCritical` |
+| Compose | `BastionLightColors.severityCritical` |

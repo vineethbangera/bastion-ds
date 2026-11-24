@@ -1,0 +1,44 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks"
+import { SeverityBadge } from "../../src"
+import { Do, DoDont, Dont } from "../blocks/do-dont"
+import * as SeverityBadgeStories from "./severity-badge.stories"
+
+<Meta of={SeverityBadgeStories} name="Usage" />
+
+# SeverityBadge usage
+
+Shows how serious a finding, alert or vulnerability is. Every level has its own icon shape and label, so it reads without colour: for colour-blind analysts, in greyscale screenshots and on printed reports. The label can't be changed or hidden, by design.
+
+<Canvas of={SeverityBadgeStories.AllSeverities} />
+
+| Severity | Meaning in Sentinel |
+|---|---|
+| `critical` | Being exploited, or trivially exploitable. Act now. |
+| `high` | Serious exposure. Fix this cycle. |
+| `medium` | Real but limited risk. Schedule a fix. |
+| `low` | Hardening or hygiene. |
+| `info` | No risk. Context worth knowing. |
+
+<DoDont>
+  <Do caption="Use SeverityBadge wherever severity appears, so it always has an icon and a label.">
+    <SeverityBadge severity="critical" />
+    <SeverityBadge severity="low" />
+  </Do>
+  <Dont caption="Build your own coloured dot or text; colour alone fails for about 1 in 12 men.">
+    <span className="size-3 rounded-full" style={{ background: "var(--severity-critical)" }} />
+    <span className="size-3 rounded-full" style={{ background: "var(--severity-low)" }} />
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do caption="Sort lists by severity, most serious first.">
+    <div className="flex flex-col items-start gap-1">
+      <SeverityBadge severity="critical" />
+      <SeverityBadge severity="high" />
+      <SeverityBadge severity="low" />
+    </div>
+  </Do>
+  <Dont caption="Use severity colours for things that aren't severity, such as status or categories.">
+    <span className="rounded-4xl px-2 text-xs" style={{ background: "var(--severity-low)", color: "white" }}>Online</span>
+  </Dont>
+</DoDont>
