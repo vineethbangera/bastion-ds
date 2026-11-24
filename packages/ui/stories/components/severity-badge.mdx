@@ -19,6 +19,12 @@ Shows how serious a finding, alert or vulnerability is. Every level has its own 
 | `low` | Hardening or hygiene. |
 | `info` | No risk. Context worth knowing. |
 
+## Counts
+
+Pass `count` to show how many findings have that severity, for example in a summary above a findings table. Leave it out when the badge describes a single finding.
+
+<Canvas of={SeverityBadgeStories.Summary} />
+
 <DoDont>
   <Do caption="Use SeverityBadge wherever severity appears, so it always has an icon and a label.">
     <SeverityBadge severity="critical" />

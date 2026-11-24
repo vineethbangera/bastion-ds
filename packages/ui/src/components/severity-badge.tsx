@@ -40,11 +40,13 @@ const severityBadgeVariants = cva(
   }
 )
 
-function SeverityBadge({
-  className,
-  severity,
-  ...props
-}: Omit<React.ComponentProps<"span">, "children"> & { severity: Severity }) {
+type SeverityBadgeProps = Omit<React.ComponentProps<"span">, "children"> & {
+  severity: Severity
+  /** How many findings have this severity, shown after the label. */
+  count?: number
+}
+
+function SeverityBadge({ className, severity, count, ...props }: SeverityBadgeProps) {
   const { icon: Icon, label } = severityContent[severity]
 
   return (
@@ -56,8 +58,13 @@ function SeverityBadge({
     >
       <Icon aria-hidden="true" />
       {label}
+      {count !== undefined && (
+        <span data-slot="severity-badge-count" className="font-semibold tabular-nums">
+          {count}
+        </span>
+      )}
     </span>
   )
 }
 
-export { SeverityBadge, severityBadgeVariants, type Severity }
+export { SeverityBadge, severityBadgeVariants, type Severity, type SeverityBadgeProps }
