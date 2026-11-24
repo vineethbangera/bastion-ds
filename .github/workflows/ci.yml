@@ -12,9 +12,6 @@ on:
   pull_request:
   push:
     branches: [main]
-  # The Release workflow starts this for the Version Packages pull request,
-  # which GitHub doesn't run workflows on by itself (see release.yml).
-  workflow_dispatch:
 
 permissions:
   contents: read
