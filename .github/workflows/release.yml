@@ -23,6 +23,7 @@ permissions:
   contents: write # push the version commit, tags and GitHub releases
   pull-requests: write # open the Version Packages pull request
   packages: write # publish to GitHub Packages
+  actions: write # start CI on the Version Packages pull request
 
 jobs:
   release:
@@ -49,6 +50,7 @@ jobs:
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Version pull request or publish
+        id: changesets
         uses: changesets/action@v2
         with:
           version-script: pnpm changeset version
@@ -57,3 +59,13 @@ jobs:
           pr-title: Version Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Pull requests opened with GITHUB_TOKEN don't start workflows, so the
+      # required CI check would never report and the pull request couldn't
+      # merge. A workflow_dispatch run on its branch reports CI for the
+      # pull request's latest commit.
+      - name: Run CI on the Version Packages pull request
+        if: steps.changesets.outputs.pr-number != ''
+        run: gh workflow run ci.yml --ref changeset-release/main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
