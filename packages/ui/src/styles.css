@@ -6,9 +6,10 @@
  * should read.
  */
 @import "@bastion/tokens/tokens.css";
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "tw-animate-css";
 
+/* Only scan the library source, not stories or other files in the package. */
 @source "./";
 
 @custom-variant dark (&:is(.dark *));

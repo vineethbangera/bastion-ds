@@ -1,0 +1,51 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+
+<Meta title="Foundations/Introduction" />
+
+# Bastion
+
+Bastion is the design system for **Sentinel**, a security console. It gives Sentinel's web app, and later its iOS and Android apps, one set of colours, components and patterns, all built from the same Figma library.
+
+## How it fits together
+
+| Layer | Package | What it does |
+|---|---|---|
+| Figma | `tokens/tokens.json` | Tokens Studio export of the Figma variables. Designers own this file. |
+| Tokens | `@bastion/tokens` | Turns that export into CSS variables, TypeScript, SwiftUI and Compose. |
+| Components | `@bastion/ui` | React components styled with those CSS variables. |
+
+A colour change in Figma reaches every platform with one build, and no component code changes.
+
+## Using Bastion in an app
+
+```tsx
+import "@bastion/ui/styles.css"
+import { Button, SeverityBadge } from "@bastion/ui"
+
+export function Example() {
+  return (
+    <>
+      <SeverityBadge severity="critical" />
+      <Button>Quarantine host</Button>
+    </>
+  )
+}
+```
+
+For dark mode, add the `dark` class to `<html>`. Every component switches with it. Use the **theme** switch in the toolbar to try it here.
+
+## How this Storybook is organised
+
+- **Foundations**: what everything is built on, such as tokens.
+- **Components**: one entry per component. **Docs** is the generated API reference, **Usage** is guidance with do and don't examples, and the stories under it show each state.
+- **Patterns**: components combined to solve a real Sentinel task, such as the findings table.
+
+## Principles
+
+- **Severity is never colour alone.** Every severity has an icon shape and a text label, so it reads in greyscale and for colour-blind analysts.
+- **Destructive actions are confirmed and named.** A button that cuts off access says what it does ("Quarantine", not "OK"), and asks first.
+- **Code matches Figma.** Prop names and values (`variant`, `size`, `severity`, `disabled`) are the same as the Figma component properties.
+
+## Checking accessibility
+
+The **Accessibility** panel under each story runs axe checks against the rendered story. Check it in both themes, because contrast problems often show up in only one.
