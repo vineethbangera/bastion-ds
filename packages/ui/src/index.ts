@@ -27,6 +27,7 @@ export {
   SeverityBadge,
   severityBadgeVariants,
   type Severity,
+  type SeverityBadgeProps,
 } from "./components/severity-badge"
 export {
   DataTable,
