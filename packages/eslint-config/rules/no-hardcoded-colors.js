@@ -24,7 +24,7 @@ const CANDIDATES = {
   surface: ["background", "card", "popover", "primary", "secondary", "muted", "accent", "destructive", ...SEVERITY],
   text: [
     "foreground", "muted-foreground", "card-foreground", "popover-foreground", "primary-foreground",
-    "secondary-foreground", "accent-foreground", "destructive", "destructive-foreground", ...SEVERITY,
+    "secondary-foreground", "accent-foreground", "destructive", "destructive-foreground", "destructive-text", ...SEVERITY,
   ],
   border: ["border", "input", "ring", "destructive", ...SEVERITY],
 }
