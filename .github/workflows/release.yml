@@ -7,6 +7,18 @@
 # - If there are none (usually because that pull request just merged), it
 #   publishes every package whose version isn't in the registry yet, then
 #   tags the commit and creates a GitHub release for each package.
+#
+# Two tokens, each doing only what it can:
+# - RELEASE_TOKEN, a fine-grained personal access token stored as a
+#   repository secret, opens and updates the Version Packages pull request
+#   and creates the tags and releases. GitHub doesn't start workflows for
+#   events caused by the workflow's own GITHUB_TOKEN, so a pull request
+#   opened with it would never get the CI check main requires. Events caused
+#   by a personal token do start workflows, so CI runs as on any other pull
+#   request.
+# - GITHUB_TOKEN publishes the packages. Fine-grained tokens can't publish to
+#   GitHub Packages, and GITHUB_TOKEN can publish packages linked to this
+#   repository, which the "repository" field in each package.json does.
 
 name: Release
 
@@ -19,11 +31,11 @@ concurrency:
   group: release
   cancel-in-progress: false
 
+# These apply to GITHUB_TOKEN only. RELEASE_TOKEN's access is set when it is
+# created: this repository only, Contents and Pull requests read and write.
 permissions:
-  contents: write # push the version commit, tags and GitHub releases
-  pull-requests: write # open the Version Packages pull request
+  contents: read
   packages: write # publish to GitHub Packages
-  actions: write # start CI on the Version Packages pull request
 
 jobs:
   release:
@@ -40,32 +52,31 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      # Fails with a clear message instead of halfway through a release.
+      - name: Check RELEASE_TOKEN is set
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error title=RELEASE_TOKEN missing::Add a fine-grained token as the RELEASE_TOKEN repository secret. See README, Releasing."
+            exit 1
+          fi
+
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # Publishing uses the workflow's own GITHUB_TOKEN, so there is no
-      # secret to manage. It can publish packages linked to this repository,
-      # which the "repository" field in each package.json does.
       - name: Authenticate with GitHub Packages
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Version pull request or publish
-        id: changesets
         uses: changesets/action@v2
         with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
           version-script: pnpm changeset version
           publish-script: pnpm release
           commit-message: Version Packages
           pr-title: Version Packages
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Read by the changelog generator to link pull requests and authors.
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
-      # Pull requests opened with GITHUB_TOKEN don't start workflows, so the
-      # required CI check would never report and the pull request couldn't
-      # merge. A workflow_dispatch run on its branch reports CI for the
-      # pull request's latest commit.
-      - name: Run CI on the Version Packages pull request
-        if: steps.changesets.outputs.pr-number != ''
-        run: gh workflow run ci.yml --ref changeset-release/main
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

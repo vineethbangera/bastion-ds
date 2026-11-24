@@ -35,6 +35,22 @@ Story tests run in headless Chromium. If it isn't installed: `pnpm --filter @vin
 2. When the pull request merges to `main`, the Release workflow opens a "Version Packages" pull request (or updates the open one) that bumps the versions and writes `CHANGELOG.md`.
 3. Merging "Version Packages" publishes the new versions, tags them and creates a GitHub release for each.
 
+### The release token
+
+The Release workflow opens the Version Packages pull request with `RELEASE_TOKEN`, a fine-grained personal access token, so that CI runs on it like any other pull request. Pull requests opened with the workflow's own `GITHUB_TOKEN` don't start workflows, so they'd never get the CI check that `main` requires. Publishing still uses `GITHUB_TOKEN`, because fine-grained tokens can't publish to GitHub Packages.
+
+To create or rotate it:
+
+1. Go to [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
+2. **Name:** `bastion-ds release`. **Expiration:** your choice. When it expires, the Release job fails until you replace it.
+3. **Repository access:** Only select repositories → `bastion-ds`.
+4. **Permissions** → Repository: **Contents** Read and write, **Pull requests** Read and write. Leave everything else as No access. Metadata Read-only is added automatically.
+5. Generate it, then store it without it ever appearing in your shell history:
+
+```bash
+gh secret set RELEASE_TOKEN --repo vineethbangera/bastion-ds
+```
+
 ### Which bump?
 
 Versions follow [semantic versioning](https://semver.org): `major.minor.patch`.
