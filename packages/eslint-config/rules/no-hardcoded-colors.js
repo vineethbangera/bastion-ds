@@ -132,7 +132,7 @@ function nearestToken(tokens, rgb, role) {
 // semantic intent rather than computing a distance.
 const HUES = {
   red: "destructive", rose: "destructive",
-  orange: "severity-high", amber: "severity-high", yellow: "severity-high",
+  orange: "severity-high", amber: "severity-medium", yellow: "severity-medium",
   lime: "severity-low", green: "severity-low", emerald: "severity-low",
   teal: "severity-info", cyan: "severity-info", sky: "severity-info", blue: "severity-info", indigo: "severity-info",
 }

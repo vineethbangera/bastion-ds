@@ -32,6 +32,8 @@ tester.run("no-hardcoded-colors", rule, {
     { code: `<div className="bg-[rgba(0,0,0,0.5)]" />`, errors: [error(`bg-primary/50`)] },
     { code: `<div className="[color:red]" />`, errors: [error(`--destructive.*var\\(--destructive\\)`)] },
     { code: `<div className="text-red-500" />`, errors: [error(`--destructive.*text-destructive\\.`)] },
+    { code: `<div className="text-yellow-600" />`, errors: [error(`--severity-medium.*text-severity-medium\\.`)] },
+    { code: `<div className="bg-orange-500/10" />`, errors: [error(`bg-severity-high/10`)] },
     { code: `<div className="bg-black/10" />`, errors: [error(`bg-primary/10`)] },
     { code: `<div className="border-gray-200" />`, errors: [error(`border-border\\.`)] },
     { code: `<div className="bg-purple-500" />`, errors: [error(`such as --background`)] },
